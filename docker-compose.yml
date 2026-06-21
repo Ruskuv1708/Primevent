@@ -114,6 +114,7 @@ services:
 networks:
   default:
     name: primevent_net
+    external: true
 
 volumes:
   party_show_db_data:
