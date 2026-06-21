@@ -118,8 +118,11 @@ networks:
 
 volumes:
   party_show_db_data:
+    external: true
     name: party_show_party_show_db_data
   crm_platform_db_data:
+    external: true
     name: party_show_crm_platform_db_data
   crm_platform_media:
+    external: true
     name: party_show_crm_platform_media
