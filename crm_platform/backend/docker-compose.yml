@@ -1,0 +1,29 @@
+services:
+  crm_platform_db:
+    image: postgres:15-alpine
+    container_name: crm_platform_postgres_container
+    ports:
+      - "${CRM_PLATFORM_DB_HOST:-127.0.0.1}:${CRM_PLATFORM_DB_PORT:-5439}:5432"
+    environment:
+      - POSTGRES_USER=${CRM_PLATFORM_DB_USER:-crm_platform_user}
+      - POSTGRES_PASSWORD=${CRM_PLATFORM_DB_PASSWORD:?Set CRM_PLATFORM_DB_PASSWORD in .env}
+      - POSTGRES_DB=${CRM_PLATFORM_DB_NAME:-crm_platform_db}
+    volumes:
+      - crm_platform_postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  crm_platform_backend:
+    build: .
+    container_name: crm_platform_backend_container
+    ports:
+      - "${CRM_PLATFORM_BACKEND_HOST:-127.0.0.1}:${CRM_PLATFORM_BACKEND_PORT:-8007}:8000"
+    environment:
+      - DATABASE_URL=postgresql://${CRM_PLATFORM_DB_USER:-crm_platform_user}:${CRM_PLATFORM_DB_PASSWORD:?Set CRM_PLATFORM_DB_PASSWORD in .env}@crm_platform_db:5432/${CRM_PLATFORM_DB_NAME:-crm_platform_db}
+      - SECRET_KEY=${CRM_PLATFORM_SECRET_KEY:?Set CRM_PLATFORM_SECRET_KEY in .env}
+      - TRUSTED_PROXY_HOSTS=${CRM_PLATFORM_TRUSTED_PROXY_HOSTS:-}
+    depends_on:
+      - crm_platform_db
+    restart: always
+
+volumes:
+  crm_platform_postgres_data:

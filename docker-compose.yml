@@ -1,0 +1,124 @@
+name: primevent
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: party_show_user
+      POSTGRES_PASSWORD: ${PARTY_SHOW_DB_PASSWORD:?Set PARTY_SHOW_DB_PASSWORD in .env}
+      POSTGRES_DB: party_show_db
+    volumes:
+      - party_show_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U party_show_user -d party_show_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  crm_db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${CRM_PLATFORM_DB_USER:-crm_platform_user}
+      POSTGRES_PASSWORD: ${CRM_PLATFORM_DB_PASSWORD:?Set CRM_PLATFORM_DB_PASSWORD in .env}
+      POSTGRES_DB: ${CRM_PLATFORM_DB_NAME:-crm_platform_db}
+    volumes:
+      - crm_platform_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${CRM_PLATFORM_DB_USER:-crm_platform_user} -d ${CRM_PLATFORM_DB_NAME:-crm_platform_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    environment:
+      PORT: 8000
+      DATABASE_URL: postgresql://party_show_user:${PARTY_SHOW_DB_PASSWORD:?Set PARTY_SHOW_DB_PASSWORD in .env}@db:5432/party_show_db
+      CORS_ORIGINS: http://localhost:5173,http://localhost:5174,http://primevent.uz,http://www.primevent.uz
+      BACKEND_ADMIN_KEY: ${BACKEND_ADMIN_KEY:?Set BACKEND_ADMIN_KEY in .env}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  crm_backend:
+    build:
+      context: ./crm_platform/backend
+    restart: unless-stopped
+    environment:
+      PORT: 8000
+      DATABASE_URL: postgresql://${CRM_PLATFORM_DB_USER:-crm_platform_user}:${CRM_PLATFORM_DB_PASSWORD:?Set CRM_PLATFORM_DB_PASSWORD in .env}@crm_db:5432/${CRM_PLATFORM_DB_NAME:-crm_platform_db}
+      SECRET_KEY: ${CRM_PLATFORM_SECRET_KEY:?Set CRM_PLATFORM_SECRET_KEY in .env}
+      CORS_ORIGINS: ${CRM_PLATFORM_CORS_ORIGINS:-http://localhost:5173,http://localhost:5174,http://localhost:5179,http://crm.primevent.uz,https://crm.primevent.uz,http://testcrm.primevent.uz,https://testcrm.primevent.uz}
+      ALLOWED_HOSTS: ${CRM_PLATFORM_ALLOWED_HOSTS:-crm.primevent.uz,testcrm.primevent.uz,localhost,127.0.0.1,crm_backend}
+      TRUSTED_PROXY_HOSTS: ${CRM_PLATFORM_TRUSTED_PROXY_HOSTS:-}
+      FILE_STORAGE_ROOT: /app/media_storage
+    ports:
+      - "${CRM_PLATFORM_BACKEND_HOST:-127.0.0.1}:${CRM_PLATFORM_BACKEND_PORT:-8007}:8000"
+    volumes:
+      - crm_platform_media:/app/media_storage
+    depends_on:
+      crm_db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+
+  crm_frontend:
+    build:
+      context: ./crm_platform/frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${CRM_PLATFORM_FRONTEND_API_BASE:-/api}
+    restart: unless-stopped
+    ports:
+      - "${CRM_PLATFORM_FRONTEND_PORT:-5179}:80"
+    depends_on:
+      - crm_backend
+
+  proxy:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "${PRIMEVENT_HTTP_BIND:-80}:80"
+      - "${PRIMEVENT_HTTPS_BIND:-443}:443"
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./deploy/testcrm_fallback.html:/usr/share/nginx/html/testcrm_fallback.html:ro
+      - ./data/certbot/www:/var/www/certbot:ro
+      - ./data/certbot/conf:/etc/letsencrypt:ro
+    depends_on:
+      - frontend
+      - backend
+      - crm_frontend
+      - crm_backend
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./data/certbot/www:/var/www/certbot
+      - ./data/certbot/conf:/etc/letsencrypt
+
+networks:
+  default:
+    name: primevent_net
+
+volumes:
+  party_show_db_data:
+    name: party_show_party_show_db_data
+  crm_platform_db_data:
+    name: party_show_crm_platform_db_data
+  crm_platform_media:
+    name: party_show_crm_platform_media

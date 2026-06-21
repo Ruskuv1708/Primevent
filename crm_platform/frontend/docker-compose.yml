@@ -1,0 +1,10 @@
+services:
+  crm_platform_frontend:
+    build:
+      context: .
+      args:
+        - VITE_API_BASE_URL=${CRM_PLATFORM_FRONTEND_API_BASE:-/api}
+    container_name: crm_platform_frontend_container
+    ports:
+      - "${CRM_PLATFORM_FRONTEND_HOST:-127.0.0.1}:${CRM_PLATFORM_FRONTEND_PORT:-5179}:80"
+    restart: always

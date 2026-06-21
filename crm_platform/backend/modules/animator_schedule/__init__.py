@@ -1,0 +1,1 @@
+"""Animator event schedule module."""

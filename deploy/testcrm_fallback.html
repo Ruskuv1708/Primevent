@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="15">
+  <title>GK CRM is recovering</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #050b16;
+      --panel: #0b1628;
+      --line: rgba(132, 181, 237, .22);
+      --text: #edf7ff;
+      --muted: #9db5d0;
+      --accent: #38bdf8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 15% 0, rgba(56, 189, 248, .18), transparent 32%),
+        radial-gradient(circle at 90% 100%, rgba(124, 58, 237, .14), transparent 34%),
+        linear-gradient(145deg, #020817, var(--bg));
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+
+    main {
+      width: min(560px, calc(100vw - 32px));
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(11, 22, 40, .88);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, .34);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border: 1px solid rgba(56, 189, 248, .32);
+      border-radius: 999px;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px rgba(56, 189, 248, .13);
+    }
+
+    h1 {
+      margin: 18px 0 10px;
+      font-size: clamp(28px, 5vw, 42px);
+      line-height: 1.08;
+      letter-spacing: -.03em;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    a {
+      display: inline-flex;
+      min-height: 40px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 800;
+      background: rgba(255, 255, 255, .06);
+    }
+
+    a.primary {
+      border-color: rgba(56, 189, 248, .5);
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="badge"><span class="dot"></span> Fallback mode</div>
+    <h1>GK CRM is recovering</h1>
+    <p>
+      The test CRM web workers are restarting or overloaded. This page refreshes automatically every 15 seconds.
+      Telegram collection and the backup container are kept separate so the service can recover without touching the main CRM.
+    </p>
+    <div class="actions">
+      <a class="primary" href="/login">Try again</a>
+      <a href="/healthz">Check health</a>
+      <a href="/readyz">Check readiness</a>
+    </div>
+  </main>
+</body>
+</html>
