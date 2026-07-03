@@ -10,4 +10,4 @@ fi
 docker compose exec -T proxy nginx -t
 docker compose exec -T proxy nginx -s reload
 
-echo "HTTPS configuration validated and reloaded for primevent.uz, www.primevent.uz, crm.primevent.uz, and testcrm.primevent.uz"
+echo "HTTPS configuration validated and reloaded for primevent.uz, www.primevent.uz, crm.primevent.uz, testcrm.primevent.uz, and lms.primevent.uz"
