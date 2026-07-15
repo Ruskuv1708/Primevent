@@ -5,6 +5,6 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    allowedHosts: ['crm.primevent.uz', 'testcrm.primevent.uz'],
+    allowedHosts: ['crm.primevent.uz', 'testcrm.primevent.uz', 'syncvista.uz', 'www.syncvista.uz'],
   },
 })

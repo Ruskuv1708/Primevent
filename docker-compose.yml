@@ -52,8 +52,8 @@ services:
       PORT: 8000
       DATABASE_URL: postgresql://${CRM_PLATFORM_DB_USER:-crm_platform_user}:${CRM_PLATFORM_DB_PASSWORD:?Set CRM_PLATFORM_DB_PASSWORD in .env}@crm_db:5432/${CRM_PLATFORM_DB_NAME:-crm_platform_db}
       SECRET_KEY: ${CRM_PLATFORM_SECRET_KEY:?Set CRM_PLATFORM_SECRET_KEY in .env}
-      CORS_ORIGINS: ${CRM_PLATFORM_CORS_ORIGINS:-http://localhost:5173,http://localhost:5174,http://localhost:5179,http://crm.primevent.uz,https://crm.primevent.uz,http://testcrm.primevent.uz,https://testcrm.primevent.uz}
-      ALLOWED_HOSTS: ${CRM_PLATFORM_ALLOWED_HOSTS:-crm.primevent.uz,testcrm.primevent.uz,localhost,127.0.0.1,crm_backend}
+      CORS_ORIGINS: ${CRM_PLATFORM_CORS_ORIGINS:-http://localhost:5173,http://localhost:5174,http://localhost:5179,http://crm.primevent.uz,https://crm.primevent.uz,http://testcrm.primevent.uz,https://testcrm.primevent.uz,http://syncvista.uz,https://syncvista.uz,http://www.syncvista.uz,https://www.syncvista.uz}
+      ALLOWED_HOSTS: ${CRM_PLATFORM_ALLOWED_HOSTS:-crm.primevent.uz,testcrm.primevent.uz,syncvista.uz,www.syncvista.uz,localhost,127.0.0.1,crm_backend}
       TRUSTED_PROXY_HOSTS: ${CRM_PLATFORM_TRUSTED_PROXY_HOSTS:-}
       FILE_STORAGE_ROOT: /app/media_storage
     ports:

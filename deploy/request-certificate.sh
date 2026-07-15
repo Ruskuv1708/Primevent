@@ -1,22 +1,27 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-: "${CERTBOT_EMAIL:?Set CERTBOT_EMAIL before requesting a certificate}"
+certbot_contact_args=(--register-unsafely-without-email)
+if [[ -n "${CERTBOT_EMAIL:-}" ]]; then
+  certbot_contact_args=(--email "$CERTBOT_EMAIL" --no-eff-email)
+fi
 
 mkdir -p data/certbot/www data/certbot/conf
 
 docker compose run --rm certbot certonly \
+  --cert-name primevent.uz \
   --webroot \
   --webroot-path /var/www/certbot \
-  --email "$CERTBOT_EMAIL" \
+  "${certbot_contact_args[@]}" \
   --agree-tos \
-  --no-eff-email \
   --non-interactive \
   --expand \
   -d primevent.uz \
   -d www.primevent.uz \
   -d crm.primevent.uz \
   -d testcrm.primevent.uz \
+  -d syncvista.uz \
+  -d www.syncvista.uz \
   -d lms.primevent.uz
 
 ./deploy/enable-https.sh
