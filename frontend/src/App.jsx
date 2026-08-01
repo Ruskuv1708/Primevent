@@ -3,13 +3,13 @@ import { useMemo, useState } from "react";
 const copy = {
   en: {
     nav: ["Programs", "Production", "Contact"],
-    heroTitle: "Prime Event Tashkent",
+    heroTitle: "Prime Kids Tashkent",
     heroSubhead:
-      "Animator teams, scripted shows, quests, hosts, costumes, and full event production for family and corporate celebrations.",
+      "Animator teams, scripted shows, quests, characters, costumes, and joyful celebrations made especially for children.",
     primaryCta: "Book a Program",
     secondaryCta: "See Formats",
     heroFacts: [
-      { value: "120+", label: "events produced" },
+      { value: "120+", label: "happy celebrations" },
       { value: "24/7", label: "booking support" },
       { value: "200+", label: "costumes and props" },
     ],
@@ -57,13 +57,13 @@ const copy = {
   },
   ru: {
     nav: ["Программы", "Продакшн", "Контакты"],
-    heroTitle: "Prime Event Tashkent",
+    heroTitle: "Prime Kids Tashkent",
     heroSubhead:
-      "Аниматоры, шоу, квесты, ведущие, костюмы и организация праздников под ключ для семейных и корпоративных событий.",
+      "Аниматоры, шоу, квесты, персонажи, костюмы и праздники под ключ — всё для ярких детских событий.",
     primaryCta: "Заказать программу",
     secondaryCta: "Смотреть форматы",
     heroFacts: [
-      { value: "120+", label: "проведенных событий" },
+      { value: "120+", label: "ярких праздников" },
       { value: "24/7", label: "принимаем заявки" },
       { value: "200+", label: "костюмов и реквизита" },
     ],
@@ -98,7 +98,7 @@ const copy = {
         copy: "Готовый тайминг с ведущими, играми, танцевальными блоками, костюмами и понятной координацией.",
       },
     ],
-    productionTitle: "Полный продакшн, а не только артисты",
+    productionTitle: "Праздник под ключ, а не только артисты",
     production: [
       "Подбор программы по возрасту, площадке, числу гостей и таймингу",
       "Ведущие, аниматоры, костюмы, реквизит, музыка и ход события",
@@ -134,8 +134,8 @@ export default function App() {
     <div className="prime-site">
       <header className="site-header">
         <button className="brand-lockup" type="button" onClick={() => scrollTo("top")}>
-          <img src="/prime-event-logo.jpg" alt="" />
-          <span>Prime Event</span>
+          <img src="/prime-kids-logo.jpg" alt="" />
+          <span>Prime Kids</span>
         </button>
         <nav className="site-nav" aria-label="Main navigation">
           <button type="button" onClick={() => scrollTo("programs")}>{current.nav[0]}</button>
@@ -175,9 +175,9 @@ export default function App() {
             </div>
           </div>
 
-          <div className="hero-stage" aria-label="Prime Event show board">
+          <div className="hero-stage" aria-label="Prime Kids show board">
             <div className="logo-orbit">
-              <img src="/prime-event-logo.jpg" alt="Prime Event" />
+              <img src="/prime-kids-logo.jpg" alt="Prime Kids" />
             </div>
             <div className="show-panel">
               <div className="show-panel-head">
@@ -199,7 +199,7 @@ export default function App() {
           </div>
         </section>
 
-        <section className="fact-strip" aria-label="Prime Event facts">
+        <section className="fact-strip" aria-label="Prime Kids facts">
           {current.heroFacts.map((fact) => (
             <div className="fact" key={fact.label}>
               <strong>{fact.value}</strong>
@@ -225,7 +225,7 @@ export default function App() {
               </article>
             ))}
           </div>
-          <nav className="seo-link-grid" aria-label="Популярные услуги Prime Event">
+          <nav className="seo-link-grid" aria-label="Популярные услуги Prime Kids">
             {seoLinks.map((link) => (
               <a href={link.href} key={link.href}>
                 {link.label}
@@ -257,10 +257,10 @@ export default function App() {
           <div className="contact-copy">
             <h2>{current.contactTitle}</h2>
             <p>{current.contactCopy}</p>
-            <div className="contact-links" aria-label={language === "ru" ? "Контакты Prime Event" : "Prime Event contacts"}>
+            <div className="contact-links" aria-label={language === "ru" ? "Контакты Prime Kids" : "Prime Kids contacts"}>
               <a href="tel:+998938819222">+998 93 881 92 22</a>
               <a href="https://t.me/Prime_event_kids" target="_blank" rel="noreferrer">Telegram</a>
-              <a href="https://www.instagram.com/prime.event.team" target="_blank" rel="noreferrer">Instagram</a>
+              <a href="https://www.instagram.com/primekids.uz" target="_blank" rel="noreferrer">@primekids.uz</a>
             </div>
           </div>
 

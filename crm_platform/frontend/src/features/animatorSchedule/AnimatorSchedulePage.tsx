@@ -623,7 +623,9 @@ function AnimatorSchedulePage() {
 
   const hourLabels = Array.from({ length: (DAY_END_MINUTES - DAY_START_MINUTES) / 60 + 1 }, (_, index) => {
     const hour = 8 + index
-    return `${String(hour).padStart(2, '0')}:00`
+    const period = hour < 12 ? 'AM' : 'PM'
+    const displayHour = hour % 12 || 12
+    return `${displayHour}:00 ${period}`
   })
 
   return (
