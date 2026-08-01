@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 
 const copy = {
   en: {
-    nav: ["Programs", "Production", "Contact"],
+    nav: ["Programs", "Prices", "Production", "Contact"],
     heroTitle: "Prime Kids Tashkent",
     heroSubhead:
       "Animator teams, scripted shows, quests, characters, costumes, and joyful celebrations made especially for children.",
@@ -44,6 +44,44 @@ const copy = {
         copy: "A complete run of show with hosts, games, dance moments, costumes, and parent-friendly timing.",
       },
     ],
+    pricingTitle: "Programs and prices",
+    pricingIntro:
+      "Choose a ready-made service or combine several formats into one celebration. Prices are shown in Uzbek soums.",
+    pricingNote: "Final cost depends on the venue, date, team size, and selected scenario.",
+    pricingGroups: [
+      {
+        title: "Animation program",
+        items: [
+          { name: "Main program", details: "2 characters · 1 hour · music and an engaging scenario", price: "950,000 UZS" },
+        ],
+      },
+      {
+        title: "Additional services",
+        items: [
+          { name: "Additional character", details: "One more character for the selected program", price: "200,000 UZS" },
+          { name: "Atmosphere entertainment", details: "1 entertainer · 1 hour", price: "500,000 UZS" },
+        ],
+      },
+      {
+        title: "Show programs",
+        items: [
+          { name: "Chemistry show", details: "Spectacular experiments", price: "900,000 UZS" },
+          { name: "Paper party", details: "Kilograms of soft paper", price: "1,200,000 UZS" },
+          { name: "Foil show", details: "Shimmering foil performance", price: "1,200,000 UZS" },
+          { name: "Ribbon show", details: "Thousands of satin ribbons · bright photos · 1 hour", price: "1,000,000 UZS" },
+          { name: "Magic show", details: "Interactive illusion performance", price: "from 1,500,000 UZS" },
+        ],
+      },
+      {
+        title: "Creativity and intelligence",
+        items: [
+          { name: "Twisting", details: "1 entertainer · 1 hour", price: "500,000 UZS" },
+          { name: "Face painting", details: "Professional paints · 1 hour", price: "400,000 UZS" },
+          { name: "Quiz show", details: "Interactive format", price: "from 1,000,000 UZS" },
+          { name: "Workshops", details: "Various themes", price: "from 1,000,000 UZS" },
+        ],
+      },
+    ],
     productionTitle: "Full-cycle production, not only performers",
     production: [
       "Program selection by age, venue, audience size, and timing",
@@ -56,7 +94,7 @@ const copy = {
       "Call or message us on Telegram or Instagram. We will suggest the right program, team size, and budget range.",
   },
   ru: {
-    nav: ["Программы", "Продакшн", "Контакты"],
+    nav: ["Программы", "Цены", "Продакшн", "Контакты"],
     heroTitle: "Prime Kids Tashkent",
     heroSubhead:
       "Аниматоры, шоу, квесты, персонажи, костюмы и праздники под ключ — всё для ярких детских событий.",
@@ -96,6 +134,44 @@ const copy = {
         title: "Выпускные",
         meta: "Садик, школа, университет",
         copy: "Готовый тайминг с ведущими, играми, танцевальными блоками, костюмами и понятной координацией.",
+      },
+    ],
+    pricingTitle: "Программы и цены",
+    pricingIntro:
+      "Выберите готовую услугу или соберите праздник из нескольких форматов. Все цены указаны в сумах.",
+    pricingNote: "Итоговая стоимость зависит от площадки, даты, состава команды и выбранного сценария.",
+    pricingGroups: [
+      {
+        title: "Анимационная программа",
+        items: [
+          { name: "Основная программа", details: "2 героя · 1 час · музыкальное сопровождение и увлекательный сценарий", price: "950 000 сум" },
+        ],
+      },
+      {
+        title: "Дополнительные услуги",
+        items: [
+          { name: "Дополнительный герой", details: "Ещё один персонаж к выбранной программе", price: "200 000 сум" },
+          { name: "Атмосферная работа", details: "1 аниматор · 1 час", price: "500 000 сум" },
+        ],
+      },
+      {
+        title: "Шоу-программы",
+        items: [
+          { name: "Химическое шоу", details: "Зрелищные эксперименты", price: "900 000 сум" },
+          { name: "Бумажный драйв", details: "Килограммы мягкой бумаги", price: "1 200 000 сум" },
+          { name: "Фольга-шоу", details: "Яркое шоу с блестящей фольгой", price: "1 200 000 сум" },
+          { name: "Ленточное шоу", details: "Тысячи атласных лент · яркие фотографии · 1 час", price: "1 000 000 сум" },
+          { name: "Иллюзионное шоу", details: "Интерактивное представление с фокусами", price: "от 1 500 000 сум" },
+        ],
+      },
+      {
+        title: "Творчество и интеллект",
+        items: [
+          { name: "Твистинг", details: "1 аниматор · 1 час", price: "500 000 сум" },
+          { name: "Аквагрим", details: "Профессиональные краски · 1 час", price: "400 000 сум" },
+          { name: "Квиз-шоу", details: "Интерактивный формат", price: "от 1 000 000 сум" },
+          { name: "Мастер-классы", details: "Различные тематики", price: "от 1 000 000 сум" },
+        ],
       },
     ],
     productionTitle: "Праздник под ключ, а не только артисты",
@@ -139,8 +215,9 @@ export default function App() {
         </button>
         <nav className="site-nav" aria-label="Main navigation">
           <button type="button" onClick={() => scrollTo("programs")}>{current.nav[0]}</button>
-          <button type="button" onClick={() => scrollTo("production")}>{current.nav[1]}</button>
-          <button type="button" onClick={() => scrollTo("contact")}>{current.nav[2]}</button>
+          <button type="button" onClick={() => scrollTo("pricing")}>{current.nav[1]}</button>
+          <button type="button" onClick={() => scrollTo("production")}>{current.nav[2]}</button>
+          <button type="button" onClick={() => scrollTo("contact")}>{current.nav[3]}</button>
         </nav>
         <div className="language-toggle" role="group" aria-label="Language toggle">
           <button
@@ -232,6 +309,32 @@ export default function App() {
               </a>
             ))}
           </nav>
+        </section>
+
+        <section className="pricing" id="pricing">
+          <div className="section-heading pricing-heading">
+            <h2>{current.pricingTitle}</h2>
+            <p>{current.pricingIntro}</p>
+          </div>
+          <div className="pricing-grid">
+            {current.pricingGroups.map((group, groupIndex) => (
+              <article className={`price-group price-group--${groupIndex + 1}`} key={group.title}>
+                <h3>{group.title}</h3>
+                <div className="price-list">
+                  {group.items.map((item) => (
+                    <div className="price-row" key={item.name}>
+                      <div>
+                        <strong>{item.name}</strong>
+                        <span>{item.details}</span>
+                      </div>
+                      <b>{item.price}</b>
+                    </div>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+          <p className="pricing-note">{current.pricingNote}</p>
         </section>
 
         <section className="production" id="production">
