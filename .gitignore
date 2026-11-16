@@ -32,3 +32,4 @@ data/*.db.bak
 *.bak-*
 *.bak_*
 *.save
+deploy/archive/

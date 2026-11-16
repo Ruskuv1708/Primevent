@@ -19,9 +19,6 @@ docker compose run --rm certbot certonly \
   -d primevent.uz \
   -d www.primevent.uz \
   -d crm.primevent.uz \
-  -d testcrm.primevent.uz \
-  -d syncvista.uz \
-  -d www.syncvista.uz \
   -d lms.primevent.uz
 
 ./deploy/enable-https.sh
