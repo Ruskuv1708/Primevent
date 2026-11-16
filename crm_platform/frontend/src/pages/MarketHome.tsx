@@ -99,6 +99,21 @@ const addDays = (date: Date, amount: number) => {
   return next
 }
 
+const formatAmericanTime = (timeStr?: string): string => {
+  if (!timeStr) return ''
+  const clean = timeStr.trim().slice(0, 5)
+  const [hStr, mStr] = clean.split(':')
+  const h = parseInt(hStr, 10)
+  const m = parseInt(mStr, 10)
+  if (isNaN(h)) return timeStr
+  const period = h >= 12 && h < 24 ? 'pm' : 'am'
+  const displayHour = h % 12 === 0 ? 12 : h % 12
+  if (isNaN(m) || m === 0) {
+    return `${displayHour}${period}`
+  }
+  return `${displayHour}:${String(m).padStart(2, '0')}${period}`
+}
+
 const getEventTypeLabel = (eventType: HomeScheduleBooking['event_type']) => (
   eventType === 'rehearsal' ? 'Репетиция' : 'Заказ'
 )
@@ -248,8 +263,8 @@ function MarketHome() {
                 return (
                   <div key={dayKey} className="animator-mobile-agenda-day">
                     <div className="animator-mobile-agenda-date">
-                      <span>{day.toLocaleDateString('ru-RU', { weekday: 'short' })}</span>
-                      <strong>{day.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' })}</strong>
+                      <span>{day.toLocaleDateString('en-US', { weekday: 'short' })}</span>
+                      <strong>{day.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' })}</strong>
                     </div>
                     <div className="animator-mobile-agenda-events">
                       {scheduleLoading ? (
@@ -263,7 +278,7 @@ function MarketHome() {
                           className={booking.has_conflict ? 'animator-mobile-event is-conflict' : 'animator-mobile-event'}
                           onClick={() => navigate('/animator-schedule')}
                         >
-                          <span>{booking.start_time} - {booking.end_time} · {getEventTypeLabel(booking.event_type)}</span>
+                          <span>{formatAmericanTime(booking.start_time)} - {formatAmericanTime(booking.end_time)} · {getEventTypeLabel(booking.event_type)}</span>
                           <strong>{booking.title}</strong>
                           <small>{booking.assigned_animators.map(animator => animator.full_name).join(', ') || t('home.noAnimator')}</small>
                         </button>

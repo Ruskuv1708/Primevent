@@ -144,6 +144,27 @@ const addDays = (date: Date, amount: number) => {
   return next
 }
 
+const formatAmericanHour = (hour: number): string => {
+  const period = hour >= 12 && hour < 24 ? 'pm' : 'am'
+  const displayHour = hour % 12 === 0 ? 12 : hour % 12
+  return `${displayHour}${period}`
+}
+
+const formatAmericanTime = (timeStr?: string): string => {
+  if (!timeStr) return ''
+  const clean = timeStr.trim().slice(0, 5)
+  const [hStr, mStr] = clean.split(':')
+  const h = parseInt(hStr, 10)
+  const m = parseInt(mStr, 10)
+  if (isNaN(h)) return timeStr
+  const period = h >= 12 && h < 24 ? 'pm' : 'am'
+  const displayHour = h % 12 === 0 ? 12 : h % 12
+  if (isNaN(m) || m === 0) {
+    return `${displayHour}${period}`
+  }
+  return `${displayHour}:${String(m).padStart(2, '0')}${period}`
+}
+
 const initialForm = (eventDate = dateKey(new Date())): BookingFormState => ({
   event_type: 'order',
   title: '',
@@ -303,7 +324,7 @@ const getCalendarGridStyle = (weekDays: Date[], dayLaneCounts: Record<string, nu
 const formatUnavailabilityDate = (value: string) => {
   const date = new Date(`${value}T00:00:00`)
   if (Number.isNaN(date.getTime())) return value
-  return date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', weekday: 'short' })
+  return date.toLocaleDateString('en-US', { weekday: 'short', month: '2-digit', day: '2-digit' })
 }
 
 function AnimatorSchedulePage() {
@@ -623,9 +644,7 @@ function AnimatorSchedulePage() {
 
   const hourLabels = Array.from({ length: (DAY_END_MINUTES - DAY_START_MINUTES) / 60 + 1 }, (_, index) => {
     const hour = 8 + index
-    const period = hour < 12 ? 'AM' : 'PM'
-    const displayHour = hour % 12 || 12
-    return `${displayHour}:00 ${period}`
+    return formatAmericanHour(hour)
   })
 
   return (
@@ -688,8 +707,8 @@ function AnimatorSchedulePage() {
             <div className="animator-calendar-corner" />
             {weekDays.map(day => (
               <div key={dateKey(day)} className="animator-calendar-day-head">
-                <span>{day.toLocaleDateString('ru-RU', { weekday: 'short' })}</span>
-                <strong>{day.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' })}</strong>
+                <span>{day.toLocaleDateString('en-US', { weekday: 'short' })}</span>
+                <strong>{day.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' })}</strong>
               </div>
             ))}
 
@@ -737,7 +756,7 @@ function AnimatorSchedulePage() {
                         disabled={!canManageSchedule}
                         aria-label={canManageSchedule ? `Редактировать ${getEventTypeActionLabel(booking.event_type)} ${booking.title}` : `${getEventTypeLabel(booking.event_type)} ${booking.title}`}
                       >
-                        <div className="animator-booking-time">{booking.start_time} - {booking.end_time}</div>
+                        <div className="animator-booking-time">{formatAmericanTime(booking.start_time)} - {formatAmericanTime(booking.end_time)}</div>
                         <span className="animator-booking-type">{getEventTypeLabel(booking.event_type)}</span>
                         <h3>{booking.title}</h3>
                         <p>{booking.program_name || 'Программа'} · {booking.client_name}</p>
@@ -766,7 +785,7 @@ function AnimatorSchedulePage() {
               </div>
               {selectedBooking && (
                 <p className="animator-edit-note">
-                  Выбрано событие {selectedBooking.start_time} - {selectedBooking.end_time}. После сохранения график пересчитает накладки.
+                  Выбрано событие {formatAmericanTime(selectedBooking.start_time)} - {formatAmericanTime(selectedBooking.end_time)}. После сохранения график пересчитает накладки.
                 </p>
               )}
               <form onSubmit={handleSubmit} className="animator-order-form">
@@ -860,12 +879,12 @@ function AnimatorSchedulePage() {
                       </span>
                         {animator.conflicting_bookings.map(conflict => (
                           <span key={conflict.id} className="animator-assignment-conflict">
-                            {conflict.start_time} - {conflict.end_time} · {getEventTypeLabel(conflict.event_type)}: {conflict.title}
+                            {formatAmericanTime(conflict.start_time)} - {formatAmericanTime(conflict.end_time)} · {getEventTypeLabel(conflict.event_type)}: {conflict.title}
                           </span>
                       ))}
                       {(animator.conflicting_unavailability || []).map(conflict => (
                         <span key={conflict.id} className="animator-assignment-conflict">
-                          {conflict.start_time} - {conflict.end_time} · {conflict.reason}
+                          {formatAmericanTime(conflict.start_time)} - {formatAmericanTime(conflict.end_time)} · {conflict.reason}
                         </span>
                       ))}
                     </button>
@@ -933,7 +952,7 @@ function AnimatorSchedulePage() {
               <article key={item.id} className="animator-unavailability-item">
                 <div>
                   <strong>{item.animator?.full_name || 'Аниматор'}</strong>
-                  <span>{formatUnavailabilityDate(item.unavailable_date)} · {item.start_time} - {item.end_time}</span>
+                  <span>{formatUnavailabilityDate(item.unavailable_date)} · {formatAmericanTime(item.start_time)} - {formatAmericanTime(item.end_time)}</span>
                 </div>
                 <p>{item.reason}</p>
                 {item.notes && <small>{item.notes}</small>}
